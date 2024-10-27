@@ -15,6 +15,7 @@ public class NewOrderMail {
     private static final JavaGmailSender gmailSender = new JavaGmailSender();
     private static final Logger logger = Logger.getLogger(NewOrderMail.class.getName());
 
+
     public static void main(String[] argv) throws Exception{
         ConnectionFactory factory = new ConnectionFactory();
         factory.setHost("localhost");
@@ -32,6 +33,6 @@ public class NewOrderMail {
     }
 
     private static void sendEmail(String message){
-        gmailSender.sendSimpleMessage("acejsaul2@gmail.com", "Order Received!", message);
+        gmailSender.sendSimpleMessage(System.getenv("MY_EMAIL"), "Order Received!", message);
     }
 }

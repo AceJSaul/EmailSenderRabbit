@@ -7,7 +7,7 @@ class JavaMailTest {
     @Test
     void sendSimpleMessage() {
         JavaGmailSender mailSender = new JavaGmailSender();
-        mailSender.sendSimpleMessage("pedrolucasbezerra3@gmail.com",
+        mailSender.sendSimpleMessage(System.getenv("MY_EMAIL"),
                 "Teste Unitário MailSender",
                 "Teste Unitário realizado com sucesso");
     }
