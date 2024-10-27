@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 
+import java.io.Serializable;
 import java.time.Instant;
 import java.util.List;
 import java.util.Objects;
@@ -12,7 +13,7 @@ import java.util.UUID;
 
 @Entity
 @Table(name = "orders")
-public class Order {
+public class Order implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)

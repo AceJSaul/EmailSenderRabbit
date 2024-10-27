@@ -4,6 +4,9 @@ import com.example.acejsaul.EmailMessaging.model.Client;
 import com.example.acejsaul.EmailMessaging.model.Order;
 import com.example.acejsaul.EmailMessaging.model.Product;
 import com.example.acejsaul.EmailMessaging.model.dto.OrderDTO;
+import com.example.acejsaul.EmailMessaging.model.mappingDTO.MappingClasses;
+import com.example.acejsaul.EmailMessaging.rabbitmqSender.MessageFormat;
+import com.example.acejsaul.EmailMessaging.rabbitmqSender.Send;
 import com.example.acejsaul.EmailMessaging.repository.ClientRep;
 import com.example.acejsaul.EmailMessaging.repository.OrderRep;
 import com.example.acejsaul.EmailMessaging.repository.ProductRep;
@@ -37,6 +40,8 @@ public class OrderService {
         List<Product> productsOrdering = new ArrayList<>();
         for (Long id : order.productId()) productsOrdering.add(productRep.findById(id).orElseThrow());
 
-        return repository.save(new Order(UUID.randomUUID(), clientOrdering, productsOrdering));
+        Order orderToBeSaved = new Order(UUID.randomUUID(), clientOrdering, productsOrdering);
+        Send.sendMessage(new MessageFormat<Order> (orderToBeSaved));
+        return repository.save(orderToBeSaved);
     }
 }

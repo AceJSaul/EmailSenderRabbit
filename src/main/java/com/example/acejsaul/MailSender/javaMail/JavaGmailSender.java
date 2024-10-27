@@ -1,24 +1,21 @@
 package com.example.acejsaul.MailSender.javaMail;
 
-
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.stereotype.Component;
 
-import java.time.Instant;
-import java.util.Date;
 import java.util.Properties;
 
 @Component
-public class JavaMail {
+public class JavaGmailSender {
 
     private final JavaMailSender mailSender;
 
     private final String mailSenderEmail = System.getenv("mailSender");
     private final String mailTestPassword = System.getenv("MAIL_SEND_PASSWORD");
 
-    public JavaMail() {
+    public JavaGmailSender() {
         mailSender = getJavaMailSender();
     }
 
@@ -34,7 +31,7 @@ public class JavaMail {
         properties.put("mail.transport.protocol", "smtp");
         properties.put("mail.smtp.auth", "true");
         properties.put("mail.smtp.starttls.enable", "true");
-        properties.put("mail.debug", "true");
+        //properties.put("mail.debug", "true");
         properties.put("mail.smtp.user", mailSenderEmail);
         properties.put("mail.smtp.password", mailTestPassword);
 
