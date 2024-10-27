@@ -7,11 +7,13 @@ import com.rabbitmq.client.ConnectionFactory;
 import com.rabbitmq.client.DeliverCallback;
 
 import java.nio.charset.StandardCharsets;
+import java.util.logging.Logger;
 
 public class NewOrderMail {
 
     private static final String QUEUE = "mail-receiving-queue";
     private static final JavaGmailSender gmailSender = new JavaGmailSender();
+    private static final Logger logger = Logger.getLogger(NewOrderMail.class.getName());
 
     public static void main(String[] argv) throws Exception{
         ConnectionFactory factory = new ConnectionFactory();
@@ -23,13 +25,13 @@ public class NewOrderMail {
 
         DeliverCallback deliverCallback = (consumerTag, delivery) -> {
             String message = new String(delivery.getBody(), StandardCharsets.UTF_8);
-            //sendEmail(message);
-            System.out.println(" [x] Received '" + message + "'");
+            sendEmail(message);
+            logger.info("Received '" + message + "'");
         };
         channel.basicConsume(QUEUE, true, deliverCallback, consumerTag -> { });
     }
 
     private static void sendEmail(String message){
-        gmailSender.sendSimpleMessage("acejsaul2@gmail.com", "Test Receiving Email", message);
+        gmailSender.sendSimpleMessage("acejsaul2@gmail.com", "Order Received!", message);
     }
 }

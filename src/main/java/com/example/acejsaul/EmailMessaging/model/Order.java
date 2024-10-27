@@ -1,6 +1,8 @@
 package com.example.acejsaul.EmailMessaging.model;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
@@ -13,17 +15,21 @@ import java.util.UUID;
 
 @Entity
 @Table(name = "orders")
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "ordId")
 public class Order implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID ordId;
+
     @ManyToOne
     @JoinColumn(name = "ordered_by")
-    @JsonIgnore
     private Client client;
+
     private Instant instant;
-    @OneToMany
+
+    @ManyToMany
+    @JoinTable(name = "order_product", joinColumns = @JoinColumn(name = "order_id"), inverseJoinColumns = @JoinColumn(name = "product_id"))
     @Fetch(FetchMode.JOIN)
     private List<Product> productList;
 

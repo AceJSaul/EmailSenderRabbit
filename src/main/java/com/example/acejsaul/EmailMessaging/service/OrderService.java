@@ -38,7 +38,10 @@ public class OrderService {
     public Order createOrder(OrderDTO order){
         Client clientOrdering = clientRep.findById(order.clientId()).orElseThrow();
         List<Product> productsOrdering = new ArrayList<>();
-        for (Long id : order.productId()) productsOrdering.add(productRep.findById(id).orElseThrow());
+        for (Long id : order.productId()){
+            Product mainProduct = productRep.findById(id).orElseThrow();
+            productsOrdering.add(mainProduct);
+        }
 
         Order orderToBeSaved = new Order(UUID.randomUUID(), clientOrdering, productsOrdering);
         Send.sendMessage(new MessageFormat<Order> (orderToBeSaved));
